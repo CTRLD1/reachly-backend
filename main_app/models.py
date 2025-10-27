@@ -28,7 +28,7 @@ class UserChallenge(models.Model):
     date_added = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.challenge.title} ({self.status})'
+        return f'{self.user.username} - {self.challenge.title} ({self.get_status_display()})'
 
 
 MOOD_CHOICES = (
@@ -47,4 +47,4 @@ class Reflection(models.Model):
    
 
     def __str__(self):
-        return f"{self.user.username}'s reflection on {self.challenge.title} ({self.mood})"
+        return f"{self.user.username}'s reflection on {self.challenge.title} ({self.get_mood_display()})"
