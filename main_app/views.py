@@ -52,6 +52,33 @@ class ChallengeDetail(APIView):
         except Exception as err:
              return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# TODO:
-# UPDATE (put)
-# DELETE
+
+    # UPDATE
+    def put(self, request, challenge_id):
+        try:
+            queryset = get_object_or_404(Challenge, id=challenge_id)
+            serializer = ChallengeSerializer(queryset, data=request.data)
+            
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        except Exception as err:
+                return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    # DELETE
+    def delete(self, request, challenge_id):
+        try:
+            queryset = get_object_or_404(Challenge, id=challenge_id)
+            queryset.delete()
+            return Response({'message:' f'Challenge {challenge_id} has been deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+        
+        except Exception as err:
+                return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    
+    # TODO
+    # full CRUD for Refletion model
+    # partial CRUD for UserChallenge model
