@@ -1,10 +1,10 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Challenge
 from .serializers import ChallengeSerializer
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -39,4 +39,19 @@ class ChallengeIndex(APIView):
 
         except Exception as err:
             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ChallengeDetail(APIView):
+    # READ
+    def get(self, request, challenge_id):
+        try:
+            queryset = get_object_or_404(Challenge, id=challenge_id)
+            serializer = ChallengeSerializer(queryset)
+            return Response(serializer.data)
         
+        except Exception as err:
+             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# TODO:
+# UPDATE (put)
+# DELETE
