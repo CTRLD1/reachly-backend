@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 # Create your models here.
 # ref: cat-collector classwork code
+# for auto_now/auto_now add: https://www.geeksforgeeks.org/python/difference-between-autonowadd-and-autonow-in-django/
 
 User = get_user_model()
 
@@ -23,8 +24,27 @@ STATUS_CHOICES = (
 class UserChallenge(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pemding')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     date_added = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.challenge.title}'
+        return f'{self.user.username} - {self.challenge.title} ({self.status})'
+
+
+MOOD_CHOICES = (
+    ('H', 'Happy'),
+    ('N', 'Netural'),
+    ('S', 'Sad')
+)
+
+class Reflection(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
+    text = models.TextField()
+    mood = models.CharField(max_length=20, choices=MOOD_CHOICES, default='Netural')
+    created_at = models.DateTimeField(auto_now_add=True) 
+    updated_at = models.DateTimeField(auto_now=True)
+   
+
+    def __str__(self):
+        return f"{self.user.username}'s reflection on {self.challenge.title} ({self.mood})"
