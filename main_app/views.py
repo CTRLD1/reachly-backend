@@ -162,10 +162,23 @@ class ReflectionDetail(APIView):
         try:
             queryset = get_object_or_404(Reflection, id=reflection_id)
             serializer = ReflectionSerializer(queryset)
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         
         except Exception as err:
              return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    # UPDATE 
+    def patch(self, request, reflection_id):
+        try:
+            queryset = get_object_or_404(Reflection, id=reflection_id)
+            serializer = ReflectionSerializer(queryset, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as err:
+            return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
     # TODO
