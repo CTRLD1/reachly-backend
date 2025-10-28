@@ -42,7 +42,7 @@ class ChallengeIndex(APIView):
 
 
 class ChallengeDetail(APIView):
-    # READ
+    # READ a single challenge by Id
     def get(self, request, challenge_id):
         try:
             queryset = get_object_or_404(Challenge, id=challenge_id)
@@ -91,7 +91,7 @@ class UserChallengeIndex(APIView):
         except Exception as err:
             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-    # so the user can add a new challenge from the available challenges in the db
+    # CREATE: so the user can add a new challenge from the available challenges in the db
     def post(self, request):
         try:
             serializer = UserChallengeSerializer(data=request.data)
@@ -104,6 +104,7 @@ class UserChallengeIndex(APIView):
 
 
 class UserChallengeDetail(APIView):
+    # READ a single user challenge by Id
     def get(self, request, userchallenge_id):
         try:
             queryset = get_object_or_404(UserChallenge, id=userchallenge_id)
@@ -112,7 +113,8 @@ class UserChallengeDetail(APIView):
 
         except Exception as err:
             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            
+        
+    # UPDATE  
     def patch(self, request, userchallenge_id):
         try:
             queryset = get_object_or_404(UserChallenge, id=userchallenge_id)
@@ -131,7 +133,7 @@ class UserChallengeDetail(APIView):
 class ReflectionIndex(APIView):
     def get(self, request):
         try:
-            # to get all of the users reflections from the db
+            # to get the reflections for all the users from the db
             queryset = Reflection.objects.all()
             serializer = ReflectionSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -153,6 +155,18 @@ class ReflectionIndex(APIView):
         except Exception as err:
             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-    
+
+class ReflectionDetail(APIView):
+    # READ a single reflection by Id
+    def get(self, request, reflection_id):
+        try:
+            queryset = get_object_or_404(Reflection, id=reflection_id)
+            serializer = ReflectionSerializer(queryset)
+            return Response(serializer.data)
+        
+        except Exception as err:
+             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
     # TODO
     # full CRUD for Refletion model 

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Home, ChallengeIndex, ChallengeDetail, UserChallengeIndex, UserChallengeDetail, ReflectionIndex
+from .views import Home, ChallengeIndex, ChallengeDetail, UserChallengeIndex, UserChallengeDetail, ReflectionIndex, ReflectionDetail
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
@@ -8,5 +8,6 @@ urlpatterns = [
     path('userchallenges/', UserChallengeIndex.as_view(), name='user_challenges_index'),
     path('userchallenges/<int:userchallenge_id>/', UserChallengeDetail.as_view(), name='user_challenge_detail'),
     path('reflections/', ReflectionIndex.as_view(), name='reflections_index'),
+    path('reflections/<int:reflection_id>/', ReflectionDetail.as_view(), name='reflection_detail')
 
 ]
