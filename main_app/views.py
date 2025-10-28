@@ -52,7 +52,6 @@ class ChallengeDetail(APIView):
         except Exception as err:
              return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
     # UPDATE
     def put(self, request, challenge_id):
         try:
@@ -66,7 +65,6 @@ class ChallengeDetail(APIView):
         
         except Exception as err:
                 return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
     # DELETE
     def delete(self, request, challenge_id):
@@ -179,6 +177,16 @@ class ReflectionDetail(APIView):
 
         except Exception as err:
             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    # DELETE
+    def delete(self, request, reflection_id):
+        try:
+            queryset = get_object_or_404(Reflection, id=reflection_id)
+            queryset.delete()
+            return Response({'message:' f'Reflection {reflection_id} has been deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+        
+        except Exception as err:
+                return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
     # TODO
