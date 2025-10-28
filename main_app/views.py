@@ -103,13 +103,29 @@ class UserChallengeIndex(APIView):
             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class UserChallengeDetail(APIView):
+    def get(self, request, userchallenge_id):
+        try:
+            queryset = get_object_or_404(UserChallenge, id=userchallenge_id)
+            serializer =   UserChallengeSerializer(queryset)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as err:
+            return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+    def put(self, request, userchallenge_id):
+        try:
+            queryset = get_object_or_404(UserChallenge, id=userchallenge_id)
+            serializer = UserChallengeSerializer(queryset, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK) 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        except Exception as err:
+            return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
 
-
-        
-
-
     # TODO
-    # partial CRUD for UserChallenge model (GET, POST, PUT)
     # full CRUD for Refletion model 
     
