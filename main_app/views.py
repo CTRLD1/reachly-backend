@@ -81,6 +81,7 @@ class ChallengeDetail(APIView):
     
     
 class UserChallengeIndex(APIView):
+    # to get the user challenges info for all the users
     def get(self, request):
         try:
             queryset = UserChallenge.objects.all()
@@ -89,6 +90,22 @@ class UserChallengeIndex(APIView):
         
         except Exception as err:
             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    # so the user can add a new challenge from the available challenges in the db
+    def post(self, request):
+        try:
+            serializer = UserChallengeSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED) 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as err:
+            return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+            
+
+
         
 
 
