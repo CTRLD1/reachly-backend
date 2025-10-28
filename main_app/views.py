@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import Challenge, UserChallenge
-from .serializers import ChallengeSerializer, UserChallengeSerializer
+from .models import Challenge, UserChallenge, Reflection
+from .serializers import ChallengeSerializer, UserChallengeSerializer, ReflectionSerializer
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
@@ -126,8 +126,19 @@ class UserChallengeDetail(APIView):
             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
 
-
-
+   
+# Reflection model (full CRUD)
+class ReflectionIndex(APIView):
+    def get(self, request):
+        try:
+            # to get all of the users reflections from the db
+            queryset = Reflection.objects.all()
+            serializer = ReflectionSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        except Exception as err:
+            return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    
     # TODO
     # full CRUD for Refletion model 
-    
