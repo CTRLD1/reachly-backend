@@ -26,7 +26,7 @@ class ChallengeIndex(APIView):
         except Exception as err:
             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-    # CREATE 
+    # CREATE a new challenge
     def post(self, request):
         try:
             serializer = ChallengeSerializer(data=request.data)
@@ -136,6 +136,20 @@ class ReflectionIndex(APIView):
             serializer = ReflectionSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         
+        except Exception as err:
+            return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    # CREATE a new reflection
+    def post(self, request):
+        try:
+            serializer = ReflectionSerializer(data=request.data)
+
+            # if its valid, save it and return a HTTP 201 CREATED status as a response
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
         except Exception as err:
             return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
