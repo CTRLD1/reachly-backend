@@ -10,6 +10,7 @@ class ChallengeSerializer(serializers.ModelSerializer):
 
 class UserChallengeSerializer(serializers.ModelSerializer):
     status_display = serializers.CharField(source='get_status_display', read_only=True)
+    challenge = serializers.StringRelatedField()
     class Meta:
         model = UserChallenge
         fields = '__all__'
