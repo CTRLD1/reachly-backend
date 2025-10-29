@@ -188,6 +188,3 @@ class ReflectionDetail(APIView):
         except Exception as err:
                 return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-    # TODO
-    # full CRUD for Refletion model 
