@@ -16,6 +16,8 @@ class UserChallengeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ReflectionSerializer(serializers.ModelSerializer):
+    mood_display = serializers.CharField(source='get_mood_display', read_only=True)
+    challenge_title = serializers.CharField(source='challenge.title', read_only=True)
     class Meta:
         model = Reflection
         fields = '__all__'
