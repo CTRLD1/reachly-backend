@@ -112,7 +112,7 @@ class UserChallengeDetail(APIView):
     # READ a single user challenge by Id
     def get(self, request, userchallenge_id):
         try:
-            queryset = get_object_or_404(UserChallenge, id=userchallenge_id)
+            queryset = get_object_or_404(UserChallenge, id=userchallenge_id, user=request.user)
             serializer =   UserChallengeSerializer(queryset)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -122,10 +122,10 @@ class UserChallengeDetail(APIView):
     # UPDATE  
     def patch(self, request, userchallenge_id):
         try:
-            queryset = get_object_or_404(UserChallenge, id=userchallenge_id)
+            queryset = get_object_or_404(UserChallenge, id=userchallenge_id, user=request.user)
             serializer = UserChallengeSerializer(queryset, data=request.data, partial=True)
             if serializer.is_valid():
-                serializer.save()
+                serializer.save(user=request.user)
                 return Response(serializer.data, status=status.HTTP_200_OK) 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -167,7 +167,7 @@ class ReflectionDetail(APIView):
     # READ a single reflection by Id
     def get(self, request, reflection_id):
         try:
-            queryset = get_object_or_404(Reflection, id=reflection_id)
+            queryset = get_object_or_404(Reflection, id=reflection_id, user=request.user)
             serializer = ReflectionSerializer(queryset)
             return Response(serializer.data, status=status.HTTP_200_OK)
         

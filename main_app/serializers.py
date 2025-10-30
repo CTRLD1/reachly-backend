@@ -10,7 +10,7 @@ class ChallengeSerializer(serializers.ModelSerializer):
 
 class UserChallengeSerializer(serializers.ModelSerializer):
     status_display = serializers.CharField(source='get_status_display', read_only=True)
-    challenge = serializers.PrimaryKeyRelatedField(queryset=Challenge.objects.all())
+    challenge_title=serializers.CharField(source='challenge.title', read_only=True)
     class Meta:
         model = UserChallenge
         fields = '__all__'
@@ -22,3 +22,4 @@ class ReflectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reflection
         fields = '__all__'
+        read_only_fields = ['user']
