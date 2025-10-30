@@ -10,10 +10,11 @@ class ChallengeSerializer(serializers.ModelSerializer):
 
 class UserChallengeSerializer(serializers.ModelSerializer):
     status_display = serializers.CharField(source='get_status_display', read_only=True)
-    challenge = serializers.StringRelatedField()
+    challenge = serializers.PrimaryKeyRelatedField(queryset=Challenge.objects.all())
     class Meta:
         model = UserChallenge
         fields = '__all__'
+        read_only_fields = ['user']
 
 class ReflectionSerializer(serializers.ModelSerializer):
     mood_display = serializers.CharField(source='get_mood_display', read_only=True)

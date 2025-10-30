@@ -38,7 +38,6 @@ MOOD_CHOICES = (
 )
 
 class Reflection(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_challenge = models.ForeignKey(UserChallenge, on_delete=models.CASCADE)
     text = models.TextField()
     mood = models.CharField(max_length=20, choices=MOOD_CHOICES, default='N')

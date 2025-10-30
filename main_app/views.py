@@ -85,10 +85,10 @@ class ChallengeDetail(APIView):
 # UserChallenge model (partial CRUD)    
 class UserChallengeIndex(APIView):
     permission_classes = [IsAuthenticated]
-    # to get the user challenges info for all the users
+    # to get the user's challenges info 
     def get(self, request):
         try:
-            queryset = UserChallenge.objects.all()
+            queryset = UserChallenge.objects.filter(user=request.user)
             serializer = UserChallengeSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         
@@ -100,7 +100,7 @@ class UserChallengeIndex(APIView):
         try:
             serializer = UserChallengeSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save()
+                serializer.save(user=request.user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED) 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as err:
@@ -139,8 +139,8 @@ class ReflectionIndex(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
-            # to get the reflections for all the users from the db
-            queryset = Reflection.objects.all()
+            # to get the reflections of the user from the db
+            queryset = Reflection.objects.filter(user=request.user)
             serializer = ReflectionSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         
@@ -154,7 +154,7 @@ class ReflectionIndex(APIView):
 
             # if its valid, save it and return a HTTP 201 CREATED status as a response
             if serializer.is_valid():
-                serializer.save()
+                serializer.save(user=request.user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
