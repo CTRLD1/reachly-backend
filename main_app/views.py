@@ -6,6 +6,9 @@ from .models import Challenge, UserChallenge, Reflection
 from .serializers import ChallengeSerializer, UserChallengeSerializer, ReflectionSerializer
 from django.shortcuts import get_object_or_404
 
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
+from django.contrib.auth import get_user_model
+
 # Create your views here.
 
 # just to test the API
@@ -16,6 +19,7 @@ class Home(APIView):
     
 # Challenge model (full CRUD)
 class ChallengeIndex(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         try:
             # to get all of the challenges from the db
@@ -42,6 +46,7 @@ class ChallengeIndex(APIView):
 
 
 class ChallengeDetail(APIView):
+    permission_classes = [AllowAny]
     # READ a single challenge by Id
     def get(self, request, challenge_id):
         try:
@@ -79,6 +84,7 @@ class ChallengeDetail(APIView):
     
 # UserChallenge model (partial CRUD)    
 class UserChallengeIndex(APIView):
+    permission_classes = [IsAuthenticated]
     # to get the user challenges info for all the users
     def get(self, request):
         try:
@@ -102,6 +108,7 @@ class UserChallengeIndex(APIView):
 
 
 class UserChallengeDetail(APIView):
+    permission_classes = [IsAuthenticated]
     # READ a single user challenge by Id
     def get(self, request, userchallenge_id):
         try:
@@ -129,6 +136,7 @@ class UserChallengeDetail(APIView):
    
 # Reflection model (full CRUD)
 class ReflectionIndex(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
             # to get the reflections for all the users from the db
@@ -155,6 +163,7 @@ class ReflectionIndex(APIView):
         
 
 class ReflectionDetail(APIView):
+    permission_classes = [IsAuthenticated]
     # READ a single reflection by Id
     def get(self, request, reflection_id):
         try:
@@ -188,3 +197,40 @@ class ReflectionDetail(APIView):
         except Exception as err:
                 return Response({'error' : str(err)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+# Auth
+User = get_user_model()
+
+# Signup new user
+# ref: cat-collector backend classwork code
+
+class SignUpUserView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        # to get username, email, password directly from request and it will be saved in user variable, same with email
+        username = request.data.get('username')
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        if not username or not password:
+            return Response(
+                {'error': 'please provide a username, password, and email'},
+                status=status.HTTP_400_BAD_REQUEST,
+                )
+        
+        if User.objects.filter(username=username).exists():
+            return Response({'error' : 'User Already Exists'},
+            status=status.HTTP_400_BAD_REQUEST,               
+            )
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+        return Response({
+            'id': user.id,
+            'username': user.username,
+            'email': user.email
+        }, status=status.HTTP_201_CREATED)

@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import Home, ChallengeIndex, ChallengeDetail, UserChallengeIndex, UserChallengeDetail, ReflectionIndex, ReflectionDetail
+from .views import Home, ChallengeIndex, ChallengeDetail, UserChallengeIndex, UserChallengeDetail, ReflectionIndex, ReflectionDetail, SignUpUserView
+
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
@@ -12,4 +14,7 @@ urlpatterns = [
     # Reflection model endpoints
     path('reflections/', ReflectionIndex.as_view(), name='reflections_index'),
     path('reflections/<int:reflection_id>/', ReflectionDetail.as_view(), name='reflection_detail'),
+    # Auth endpoints
+     path('login/', TokenObtainPairView.as_view(), name='login'),
+    
 ]
