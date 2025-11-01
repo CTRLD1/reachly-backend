@@ -252,3 +252,19 @@ class DeleteUser(APIView):
         user = User.objects.get(id = request.user)
         user.delete()
         return Response()
+    
+    
+# get user's profile info for ProfilePage 
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            'id': user.id,
+            'username' : user.username,
+            'email' : user.email,
+            'first_name' : user.first_name,
+            'last_name': user.last_name,
+        })
+
