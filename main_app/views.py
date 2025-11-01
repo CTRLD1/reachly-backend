@@ -212,6 +212,8 @@ class SignUpUserView(APIView):
         username = request.data.get('username')
         email = request.data.get('email')
         password = request.data.get('password')
+        first_name = request.data.get('first_name')
+        last_name = request.data.get('last_name')
 
         if not username or not password:
             return Response(
@@ -227,10 +229,26 @@ class SignUpUserView(APIView):
         user = User.objects.create_user(
             username=username,
             email=email,
-            password=password
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            
         )
         return Response({
             'id': user.id,
             'username': user.username,
-            'email': user.email
+            'email': user.email,
+            'first_name' : user.first_name,
+            'last_name': user.last_name,
+
         }, status=status.HTTP_201_CREATED)
+    
+    
+# to delte a user  
+class DeleteUser(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request):
+        user = User.objects.get(id = request.user)
+        user.delete()
+        return Response()
