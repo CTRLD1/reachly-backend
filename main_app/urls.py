@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Home, ChallengeIndex, ChallengeDetail, UserChallengeIndex, UserChallengeDetail, ReflectionIndex, ReflectionDetail, SignUpUserView, ProfileView
+from .views import Home, ChallengeIndex, ChallengeDetail, UserChallengeIndex, UserChallengeDetail, ReflectionIndex, ReflectionDetail, SignUpUserView, ProfileView, ProgressView
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -20,6 +20,8 @@ urlpatterns = [
     path('signup/', SignUpUserView.as_view(), name='signup'),
     # ProfilePage endpoint
     path('profile/', ProfileView.as_view(), name='profile'),
+    # User progress endpoint
+    path('progress/', ProgressView.as_view(), name='progress')
      
     
 ]

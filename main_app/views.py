@@ -268,3 +268,22 @@ class ProfileView(APIView):
             'last_name': user.last_name,
         })
 
+
+class ProgressView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        total = UserChallenge.objects.filter(user=user).count()
+        pending = UserChallenge.objects.filter(user=user, status='P').count()
+        in_progress = UserChallenge.objects.filter(user=user, status='IP').count()
+        completed = UserChallenge.objects.filter(user=user, status='C').count()
+
+        return Response({
+            'total' : total,
+            'pending' : pending,
+            'in_progress' : in_progress,
+            'completed' : completed,
+        })
+
+
