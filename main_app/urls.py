@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Home, ChallengeIndex, ChallengeDetail, UserChallengeIndex, UserChallengeDetail, ReflectionIndex, ReflectionDetail, SignUpUserView, ProfileView, ProgressView
+from .views import Home, ChallengeIndex, ChallengeDetail, UserChallengeIndex, UserChallengeDetail, ReflectionIndex, ReflectionDetail, SignUpUserView, ProfileView, ProgressView, DeleteUser
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -18,8 +18,9 @@ urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='login'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('signup/', SignUpUserView.as_view(), name='signup'),
-    # ProfilePage endpoint
+    # ProfilePage endpoints
     path('profile/', ProfileView.as_view(), name='profile'),
+    path('profile/delete-user/', DeleteUser.as_view(), name='delete-user'),
     # User progress endpoint
     path('progress/', ProgressView.as_view(), name='progress')
      

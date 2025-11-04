@@ -249,9 +249,12 @@ class DeleteUser(APIView):
     permission_classes = [IsAuthenticated]
     
     def delete(self, request):
-        user = User.objects.get(id = request.user)
+        user = request.user
+        username=user.username
         user.delete()
-        return Response()
+        return Response(
+            {'message' : f'User {username} has been deleted successfully'}
+        )
     
     
 # get user's profile info for ProfilePage 
@@ -285,5 +288,4 @@ class ProgressView(APIView):
             'in_progress' : in_progress,
             'completed' : completed,
         })
-
 
