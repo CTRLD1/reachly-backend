@@ -13,12 +13,13 @@ Each user can choose a challenges, **track their progress**, and write **reflect
 
 - Python 3.13
 - Django 5.2.7
+- psycopg2
 - PostgresSQL
-- Simple JWT
-- Doocker
+- Simple JWT 
+- django-cors-headers 
 
 ## Reachly frontend repository link:
-[Reachyly Frontend (React)(https://github.com/CTRLD1/reachly-frontend)]
+(React) (https://github.com/CTRLD1/reachly-frontend)
 
 
 ## ERD Diagram
@@ -30,7 +31,6 @@ Each user can choose a challenges, **track their progress**, and write **reflect
 ## Routing Table
 | Method | URL Pattern | View | Description |
 |--------|--------------|------|--------------|
-| GET | `/` | `Home` | Displays API welcome message |
 | GET | `/challenges/` | `ChallengeIndex` | Returns a list of all challenges |
 | GET | `/challenges/<int:challenge_id>/` | `ChallengeDetail` | Returns details of a specific challenge |
 | GET / POST | `/userchallenges/` | `UserChallengeIndex` | Lists or creates user-specific challenges |
