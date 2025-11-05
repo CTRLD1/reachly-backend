@@ -1,0 +1,45 @@
+services:
+  reachly_db:
+    image: postgres
+    container_name: reachly_db
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    env_file:
+    - .env
+     
+  
+  frontend:
+    build:
+      context: ../reachly-frontend/
+      dockerfile: Dockerfile
+    container_name: "reachly_frontend"
+    ports:
+      - "5173:5173" # maps port 5173 on the container to 5173 on the host machine
+    volumes:
+      - ../reachly-frontend:/app # basically don't delete these between starting and stopping the container
+      - /app/node_modules 
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - reachly_db
+
+  backend:
+    build:
+      context: ./reachly-backend
+      dockerfile: Dockerfile
+    container_name: reachly_backend
+    command: >
+      bash -c "
+              python manage.py makemigrations &&
+              python manage.py migrate &&
+              python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./:/usr/src/backend/
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    depends_on:
+      - reachly_db
+volumes:
+  postgres_data:
