@@ -47,4 +47,4 @@ class Reflection(models.Model):
    
 
     def __str__(self):
-        return f"{self.user.username}'s reflection on {self.user_challenge.title} ({self.get_mood_display()})"
+        return f"{self.user.username}'s reflection on {self.user_challenge} ({self.get_mood_display()})"
